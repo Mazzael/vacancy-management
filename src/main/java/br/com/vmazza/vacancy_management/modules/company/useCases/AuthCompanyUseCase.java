@@ -2,6 +2,7 @@ package br.com.vmazza.vacancy_management.modules.company.useCases;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 
 import javax.security.sasl.AuthenticationException;
 
@@ -15,6 +16,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
 import br.com.vmazza.vacancy_management.modules.company.dto.AuthCompanyDTO;
+import br.com.vmazza.vacancy_management.modules.company.dto.AuthCompanyResponseDTO;
 import br.com.vmazza.vacancy_management.modules.company.repositories.CompanyRepository;
 
 @Service
@@ -29,7 +31,7 @@ public class AuthCompanyUseCase {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public String execute(AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
+    public AuthCompanyResponseDTO execute(AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
 
         var company = this.companyRepository.findByUserName(authCompanyDTO.getUserName()).orElseThrow(() -> {
             throw new UsernameNotFoundException("Company not found");
@@ -42,9 +44,19 @@ public class AuthCompanyUseCase {
         }
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
-        var token = JWT.create().withIssuer("javagas").withExpiresAt(Instant.now().plus(Duration.ofHours(2))).withSubject(company.getId().toString()).sign(algorithm);
 
-        return token;
+        var expiresIn = Instant.now().plus(Duration.ofHours(2));
+
+        var token = JWT.create()
+            .withIssuer("javagas")
+            .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
+            .withSubject(company.getId().toString())
+            .withClaim("roles", Arrays.asList("COMPANY"))
+            .sign(algorithm);
+
+        var authCompanyResponseDTO = AuthCompanyResponseDTO.builder().accessToken(token).expiresIn(expiresIn.toEpochMilli()).build();
+
+        return authCompanyResponseDTO;
     }
     
 }
