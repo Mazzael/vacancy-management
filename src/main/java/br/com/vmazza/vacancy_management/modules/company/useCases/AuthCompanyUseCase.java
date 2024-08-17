@@ -1,5 +1,8 @@
 package br.com.vmazza.vacancy_management.modules.company.useCases;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import javax.security.sasl.AuthenticationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +42,7 @@ public class AuthCompanyUseCase {
         }
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
-        var token = JWT.create().withIssuer("javagas").withSubject(company.getId().toString()).sign(algorithm);
+        var token = JWT.create().withIssuer("javagas").withExpiresAt(Instant.now().plus(Duration.ofHours(2))).withSubject(company.getId().toString()).sign(algorithm);
 
         return token;
     }
