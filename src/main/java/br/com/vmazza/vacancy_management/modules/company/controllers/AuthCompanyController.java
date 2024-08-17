@@ -1,7 +1,5 @@
 package br.com.vmazza.vacancy_management.modules.company.controllers;
 
-import javax.security.sasl.AuthenticationException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
