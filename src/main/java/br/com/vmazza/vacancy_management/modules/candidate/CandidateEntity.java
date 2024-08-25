@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,18 +23,26 @@ public class CandidateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @Schema(example = "John Doe")
     private String name;
 
     @NotBlank()
     @Pattern(regexp = "\\S+", message = "The userName should not have an space character")
+    @Schema(example = "john_doe")
     private String userName;
 
     @Email(message = "Should be a valid email")
+    @Schema(example = "johndoe@example.com")
     private String email;
 
     @Length(min = 10, max = 100)
+    @Schema(example = "admin@1234", minLength = 10, maxLength = 100)
     private String password;
+
+    @Schema(example = "Java developer")
     private String description;
+    
     private String curriculum;
 
     @CreationTimestamp
