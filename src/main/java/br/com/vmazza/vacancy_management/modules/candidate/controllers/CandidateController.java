@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.vmazza.vacancy_management.modules.candidate.CandidateEntity;
+import br.com.vmazza.vacancy_management.modules.candidate.dto.ProfileCandidateResponseDTO;
 import br.com.vmazza.vacancy_management.modules.candidate.useCases.CreateCandidateUseCase;
 import br.com.vmazza.vacancy_management.modules.candidate.useCases.ListAllJobsByFilterUseCase;
 import br.com.vmazza.vacancy_management.modules.candidate.useCases.ProfileCandidateUseCase;
@@ -54,6 +55,15 @@ public class CandidateController {
     
     @GetMapping("/")
     @PreAuthorize("hasRole('CANDIDATE')")
+    @Tag(name = "Candidate", description = "Candidate informations")
+    @Operation(summary = "Candidate profile", description = "This route is responsible for fetching the profile's informations of the candidate")
+    @ApiResponses({
+     @ApiResponse(responseCode = "200", content = {
+          @Content(schema = @Schema(implementation = ProfileCandidateResponseDTO.class))
+     }),
+     @ApiResponse(responseCode = "400", description = "User not found")
+    })
+    @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<Object> get(HttpServletRequest request) {
 
      var candidateId = request.getAttribute("candidate_id");
