@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,7 +25,7 @@ public class CandidateEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Schema(example = "John Doe")
+    @Schema(example = "John Doe", requiredMode = RequiredMode.REQUIRED, description = "candidate name")
     private String name;
 
     @NotBlank()
@@ -37,7 +38,7 @@ public class CandidateEntity {
     private String email;
 
     @Length(min = 10, max = 100)
-    @Schema(example = "admin@1234", minLength = 10, maxLength = 100)
+    @Schema(example = "admin@1234", minLength = 10, maxLength = 100, requiredMode = RequiredMode.REQUIRED, description = "candidate password")
     private String password;
 
     @Schema(example = "Java developer")
