@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import br.com.vmazza.vacancy_management.modules.company.entities.CompanyEntity;
 
 public interface CompanyRepository extends JpaRepository<CompanyEntity, UUID> {
-    Optional<CompanyEntity> findByUserNameOrEmail(String name, String email);
-    Optional<CompanyEntity> findByUserName(String userName);
+    Optional<CompanyEntity> findByUsernameOrEmail(String username, String email);
+    Optional<CompanyEntity> findByUsername(String username);
 }

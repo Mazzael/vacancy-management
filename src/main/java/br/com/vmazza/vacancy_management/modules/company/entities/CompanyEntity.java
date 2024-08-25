@@ -13,31 +13,36 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity(name = "company")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CompanyEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    @NotBlank()
-    @Pattern(regexp = "\\S+", message = "The userName should not have an space character")
-    private String userName;
+  @NotBlank
+  @Pattern(regexp = "\\S+", message = "O campo [username] não deve conter espaço")
+  private String username;
 
-    @Email(message = "Should be a valid email")
-    private String email;
+  @Email(message = "O campo [email] deve conter um e-mail válido")
+  private String email;
 
-    @Length(min = 10, max = 100)
-    private String password;
-    
-    private String website;
-    private String name;
-    private String description;
+  @Length(min = 10, max = 100, message = "A senha deve conter entre (10) e (100) caracteres")
+  private String password;
 
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-    
+  private String website;
+  private String name;
+  private String description;
+
+  @CreationTimestamp
+  private LocalDateTime createdAt;
 }

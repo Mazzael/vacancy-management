@@ -33,7 +33,7 @@ public class AuthCompanyUseCase {
 
     public AuthCompanyResponseDTO execute(AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
 
-        var company = this.companyRepository.findByUserName(authCompanyDTO.getUserName()).orElseThrow(() -> {
+        var company = this.companyRepository.findByUsername(authCompanyDTO.getUsername()).orElseThrow(() -> {
             throw new UsernameNotFoundException("Company not found");
         });
 
