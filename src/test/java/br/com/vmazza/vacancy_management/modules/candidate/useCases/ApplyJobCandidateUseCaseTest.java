@@ -2,7 +2,6 @@ package br.com.vmazza.vacancy_management.modules.candidate.useCases;
 
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
