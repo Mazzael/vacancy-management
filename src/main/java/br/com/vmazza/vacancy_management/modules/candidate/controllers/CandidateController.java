@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.vmazza.vacancy_management.modules.candidate.CandidateEntity;
 import br.com.vmazza.vacancy_management.modules.candidate.dto.ProfileCandidateResponseDTO;
+import br.com.vmazza.vacancy_management.modules.candidate.useCases.ApplyJobCandidateUseCase;
 import br.com.vmazza.vacancy_management.modules.candidate.useCases.CreateCandidateUseCase;
 import br.com.vmazza.vacancy_management.modules.candidate.useCases.ListAllJobsByFilterUseCase;
 import br.com.vmazza.vacancy_management.modules.candidate.useCases.ProfileCandidateUseCase;
@@ -43,6 +44,9 @@ public class CandidateController {
 
     @Autowired
     private ListAllJobsByFilterUseCase listAllJobsByFilterUseCase;
+
+    @Autowired
+    private ApplyJobCandidateUseCase applyJobCandidateUseCase;
 
     @PostMapping("/")
     @Operation(summary = "Candidate registration", description = "This route is responsible for register a candidate")
@@ -99,4 +103,20 @@ public class CandidateController {
           return this.listAllJobsByFilterUseCase.execute(filter);
     }
     
+    @PostMapping("/job/apply")
+    @PreAuthorize("hasROLE('CANDIDATE')")
+    @SecurityRequirement(name = "jwt_auth")
+    @Operation(summary = "Candidate apply to a job", description = "This route is responsible for apllying a candidate to a job")
+    public ResponseEntity<Object> applyJob(HttpServletRequest request, @RequestBody UUID jobId) {
+
+          var candidateId = request.getAttribute("candidate_id");
+
+          try {
+               var result = applyJobCandidateUseCase.execute(UUID.fromString(candidateId.toString()), jobId);
+
+               return ResponseEntity.ok().body(result);
+          } catch(Exception e) {
+               return ResponseEntity.badRequest().body(e.getMessage());
+          }
+    }
 }
